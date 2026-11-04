@@ -1,1 +1,7 @@
-1. 
+1. ב-Docker Compose מוגדר בשירות Stats המשתנה BACKEND_URL עם הכתובת http://backend:5000, וכך Stats מתקשר עם Backend דרך הרשת הפנימית של Docker. הדפדפן מגיע ל-Frontend דרך פורט 8080 שמוגדר ב-YAML, ומשם Nginx מעביר את הבקשות ל-Backend.
+2. המוצרים נשארים לאחר docker compose down ו-up, מכיוון שהנתונים נשמרים ב-Named Volume בשם postgres-data, שאינו נמחק יחד עם ה-Containers. לעומת זאת, docker compose down -v מוחק גם את ה-Volume, ולכן הנתונים והמוצרים שנשמרו בו נמחקים.
+3. זהו Bind Mount, מכיוון שהוא מחבר קובץ שנמצא במחשב (../sql/init.sql) לנתיב בתוך ה-Container. אם משנים את הקובץ לאחר שמסד הנתונים כבר נוצר, השינוי לא יתבצע אוטומטית במסד, מכיוון שסקריפט האתחול רץ רק ביצירת מסד נתונים חדש.
+4. Docker Compose יצר רשת בשם docker_default ו-Volume בשם docker_postgres-data. השמות מורכבים משם הפרויקט (docker) ומהשם של הרשת או ה-Volume. הרשת מאפשרת תקשורת בין השירותים, וה-Volume שומר את נתוני PostgreSQL.
+5. ב-Image הסופי של ה-Multi-stage נמצאים Nginx וקובצי האתר שנוצרו בתהליך הבנייה, אך לא Node.js ששימש לבנייה. אין צורך ב-CMD כי ל-Image של Nginx כבר מוגדרת פקודת הפעלה. בשירות Stats אין צורך ב-Multi-stage מכיוון שהוא מריץ את server.js ישירות באמצעות Node.js, ללא שלב בנייה נפרד
+6. ה-Images מסוג single ו-multi כמעט זהים בגודלם, מכיוון ששניהם מבוססים על Nginx ואינם מכילים Node.js. לעומתם, kitchen גדול יותר מכיוון שהוא מכיל את סביבת Node.js וכלי הבנייה.
+7. הבקשה `/api/stats` מגיעה לשירות Stats מכיוון ש-Nginx בוחר את ה-`location` הספציפי ביותר שמתאים לכתובת. הלוכסן בסוף `http://backend:5000/` גורם להחלפת הקידומת `/api/` ב-`/`, ולכן הבקשה `/api/products` מועברת ל-Backend כ-`/products`.
