@@ -20,9 +20,9 @@ spec:
           image: postgres:15-alpine               # same image as in Compose: version 15, alpine
           envFrom:
             - secretRef:
-                name: ____          # name of the Secret (postgres-secret.yml)
+                name: postgres-secret          # name of the Secret (postgres-secret.yml)
           ports:
-            - containerPort: ____   # postgres port
+            - containerPort: 5432   # postgres port
           readinessProbe:
             exec:
               command: ["pg_isready", "-U", "shopuser", "-d", "shoplist"]   # user and database from the Secret, plain text
