@@ -13,4 +13,4 @@
 הפתרון הוא יצירת Pods חדשים באמצעות:
 kubectl rollout restart deployment/backend -n shoplist
 
-7.ב-12 הקבצים המקוריים שם ה-Namespace shoplist מוגדר 12 פעמים. כדי ליצור עותק נוסף ב-Namespace אחר, נדרש לשנות את הגדרת ה-Namespace בכל 12 הקבצים, ובפרויקט הסופי גם בקובץ ה-ConfigMap הנוסף.
+7. ב-12 הקבצים המקוריים שם ה-Namespace shoplist מוגדר 12 פעמים. כדי ליצור עותק נוסף ב-Namespace אחר, נדרש לשנות את הגדרת ה-Namespace בכל 12 הקבצים, ובפרויקט הסופי גם בקובץ ה-ConfigMap הנוסף.
